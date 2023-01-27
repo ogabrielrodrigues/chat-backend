@@ -1,4 +1,5 @@
-import { makeUser } from '@test/factories/userFactory'
+import { PrismaUserMapper } from '@database/prisma/mappers/prismaUserMapper'
+import { faker } from '@faker-js/faker'
 import { InMemoryUserRepository } from '@test/repositories/inMemoryUserRepository'
 import { describe, expect, it } from 'vitest'
 import { CreateUser } from './createUser'
@@ -11,12 +12,25 @@ const getUsers = new GetUsers(inMemoryUserRepository)
 
 describe('Get users', () => {
   it('should be able to get existing users.', async () => {
-    const { user: user1 } = await createUser.execute(makeUser())
-    const { user: user2 } = await createUser.execute(makeUser())
+    const { user: user1 } = await createUser.execute({
+      name: faker.name.fullName(),
+      username: faker.name.lastName(),
+      age: parseInt(faker.random.numeric(2)),
+      email: faker.internet.email(),
+      password: faker.internet.password()
+    })
+
+    const { user: user2 } = await createUser.execute({
+      name: faker.name.fullName(),
+      username: faker.name.lastName(),
+      age: parseInt(faker.random.numeric(2)),
+      email: faker.internet.email(),
+      password: faker.internet.password()
+    })
 
     const { users } = await getUsers.execute()
 
     expect(users).toHaveLength(2)
-    expect(users).toEqual(expect.arrayContaining([user1, user2]))
+    expect(users).toEqual(expect.arrayContaining([user1, user2].map(PrismaUserMapper.toDomain)))
   })
 })

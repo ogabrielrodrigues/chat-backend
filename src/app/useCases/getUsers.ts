@@ -1,3 +1,4 @@
+import { PrismaUserMapper } from '@database/prisma/mappers/prismaUserMapper'
 import { User } from '@entities/user'
 import { UserRepository } from '@repositories/userRepository'
 
@@ -12,7 +13,7 @@ export class GetUsers {
     const users = await this.userRepository.getUsers()
 
     return {
-      users
+      users: users.map(PrismaUserMapper.toDomain)
     }
   }
 }

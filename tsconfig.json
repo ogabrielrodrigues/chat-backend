@@ -19,6 +19,7 @@
       "@useCases/*": ["./src/app/useCases/*"],
       "@database/*": ["./src/infra/database/*"],
       "@instances/*": ["src/infra/http/instances/*"],
+      "@viewModels/*": ["src/infra/http/viewModels/*"],
       "@test/*": ["./test/*"],
       "@helpers/*": ["./src/infra/helpers/*"],
     }

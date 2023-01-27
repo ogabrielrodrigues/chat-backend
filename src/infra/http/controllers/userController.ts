@@ -1,4 +1,3 @@
-import { PrismaUserMapper } from '@database/prisma/mappers/prismaUserMapper'
 import { CreateUser } from '@useCases/createUser'
 import { FastifyRequest, FastifyReply } from 'fastify'
 
@@ -6,6 +5,7 @@ import { prismaUserErrors } from '@helpers/error/prismaUserErrors'
 
 import { CreateUserDTO } from '../dtos/createUserDTO'
 import { GetUsers } from '@useCases/getUsers'
+import { UserViewModel } from '@viewModels/userViewModel'
 
 export class UserController {
   constructor(private createUser: CreateUser, private getUsers: GetUsers) {}
@@ -16,7 +16,7 @@ export class UserController {
 
       const { user } = await this.createUser.execute({ name, username, age, email, password })
 
-      return reply.status(201).send({ user: PrismaUserMapper.toPrisma(user) })
+      return reply.status(201).send({ user: UserViewModel.toHttp(user) })
     } catch (err) {
       return reply.status(400).send(prismaUserErrors.emailAlreadyUsed(err))
     }
@@ -26,7 +26,7 @@ export class UserController {
     try {
       const { users } = await this.getUsers.execute()
 
-      return reply.status(201).send({ users: users.map(PrismaUserMapper.toPrisma) })
+      return reply.status(200).send({ users: users.map(UserViewModel.toHttp) })
     } catch (err) {
       return reply.status(400).send(err)
     }
