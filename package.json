@@ -2,20 +2,19 @@
   "name": "restful",
   "version": "1.0.0",
   "description": "",
-  "main": "",
-  "author": "",
+  "main": "dist/index.js",
+  "author": "ogabrielrodrigues",
   "license": "MIT",
   "private": false,
   "scripts": {
-    "start": "tsx src/index.ts",
+    "start": "node dist/index.js",
     "dev": "tsx watch src/index.ts",
     "build": "npm run lint && npm run format && npm run find-deadcode && npx vitest run && tsup ./src",
     "test": "vitest",
     "lint": "eslint ./**/*.ts --no-ignore --fix",
     "postinstall": "npx husky install",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "find-deadcode": "ts-prune -e",
-    "dist:start": "node dist/index.js"
+    "find-deadcode": "ts-prune -e"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
