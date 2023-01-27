@@ -6,19 +6,18 @@ interface UserProps {
   username: string
   age: number
   email: string
-  password: string
+  password?: string
 }
 
 export class User {
   private _id: string
+  private pass: string
   private props: UserProps
 
-  constructor(props: UserProps, id?: string) {
-    this.props = {
-      ...props,
-      password: hashSync(props.password, 12)
-    }
+  constructor(props: UserProps, id?: string, pass?: string) {
+    this.props = props
 
+    this.pass = pass ?? hashSync(props.password, 12)
     this._id = id ?? uuid()
   }
 
@@ -59,10 +58,10 @@ export class User {
   }
 
   public set password(password: string) {
-    this.props.password = password
+    this.pass = password
   }
 
   public get password(): string {
-    return this.props.password
+    return this.pass
   }
 }
