@@ -11,7 +11,7 @@
     "dev": "tsx watch src/index.ts",
     "build": "npm run lint && npm run format && npm run find-deadcode && npx vitest run && tsup ./src",
     "test": "vitest",
-    "lint": "eslint ./**/*.ts --fix",
+    "lint": "eslint ./**/*.ts --no-ignore --fix",
     "postinstall": "npx husky install",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "find-deadcode": "ts-prune -e",

@@ -1,10 +1,7 @@
 import 'dotenv/config'
-import fastify from 'fastify'
 import cors from '@fastify/cors'
-
-import faker from '@faker-js/faker'
-
 import { userController } from '@instances/userControllerInstance'
+import fastify from 'fastify'
 
 const app = fastify()
 const port = process.env.PORT ?? 3333

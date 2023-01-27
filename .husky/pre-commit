@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npm run lint; npm run format; npm run find-deadcode
+npm run lint; npm run format; npm run find-deadcode; npx vitest run
