@@ -14,7 +14,7 @@
     "lint": "eslint ./**/*.ts --fix",
     "postinstall": "npx husky install",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "find-deadcode": "ts-prune",
+    "find-deadcode": "ts-prune -e",
     "dist:start": "node dist/index.js"
   },
   "devDependencies": {
