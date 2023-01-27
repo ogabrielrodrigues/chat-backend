@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",                                  
+    "lib": ["ES7", "DOM"],                                        
+    "module": "CommonJS",     
+    "moduleResolution": "Node",                           
+    "typeRoots": ["src/@types", "node_modules/@types"],                                      
+    "allowJs": true,
+    "baseUrl": "./",                                  
+    "outDir": "dist",                                   
+    "esModuleInterop": true,                               
+    "forceConsistentCasingInFileNames": true,            
+    "strict": false,                                      
+    "skipLibCheck": true,
+    "paths": {
+      "@entities/*": ["./src/app/entities/*"],
+      "@repositories/*": ["./src/app/repositories/*"],
+      "@controllers/*": ["./src/infra/http/controllers/*"],
+      "@useCases/*": ["./src/app/useCases/*"],
+      "@database/*": ["./src/infra/database/*"],
+      "@instances/*": ["src/infra/http/instances/*"],
+      "@test/*": ["./test/*"],
+      "@helpers/*": ["./src/infra/helpers/*"],
+    }
+  },
+  "exclude": ["dist"]
+}
