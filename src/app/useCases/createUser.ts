@@ -1,4 +1,3 @@
-import { PrismaUserMapper } from '@database/prisma/mappers/prismaUserMapper'
 import { User } from '@entities/user'
 import { UserRepository } from '@repositories/userRepository'
 
