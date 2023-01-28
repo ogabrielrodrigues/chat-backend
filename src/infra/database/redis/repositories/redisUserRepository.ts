@@ -6,7 +6,9 @@ import { Redis } from 'ioredis'
 export class RedisUserRepository implements UserRepository {
   constructor(private redis: Redis, private userRepository: UserRepository) {}
 
-  async create(user: User): Promise<void> {}
+  async create(user: User): Promise<void> {
+    this.userRepository.create(user)
+  }
 
   async getUsers(): Promise<User[]> {
     const cachedUsers = await this.redis.get('users-cache')
@@ -25,6 +27,22 @@ export class RedisUserRepository implements UserRepository {
   }
 
   async countUsers(): Promise<number> {
-    return 0
+    return this.userRepository.countUsers()
+  }
+
+  async getUserById(id: string): Promise<User> {
+    const cachedUser = await this.redis.get('user-cached')
+
+    if (!cachedUser) {
+      const user = await this.userRepository.getUserById(id)
+
+      const preCachedUser = PrismaUserMapper.toPrisma(user)
+
+      await this.redis.set('user-cached', JSON.stringify(preCachedUser), 'EX', 60)
+
+      return PrismaUserMapper.toDomain(user)
+    }
+
+    return JSON.parse(cachedUser)
   }
 }
