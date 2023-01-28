@@ -30,6 +30,15 @@ jobs:
     
     - name: Build
       run: npm run build --if-present
+      
+    - name: Run Tests
+      run: npx vitest run
+      
+    - name: Lint and Format
+      run: npm run lint && npm run format
+      
+    - name: Run ts-prune
+      run: npm run find-deadcode
 
     - name: Zip
       run: zip dist.zip dist
