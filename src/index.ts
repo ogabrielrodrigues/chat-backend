@@ -12,6 +12,7 @@ app.register(cors, {
 
 // User
 app.post('/user', async (req, rep) => await userController.create(req, rep))
-app.get('/user', async (req, rep) => await userController.listUsers(req, rep))
+app.get('/user', async (req, rep) => await userController.list(req, rep))
+app.get('/user/count', async (req, rep) => await userController.count(req, rep))
 
 app.listen({ port: parseInt(String(port)) }).then(() => console.log('Server is running.'))

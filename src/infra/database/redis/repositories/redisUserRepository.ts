@@ -23,4 +23,8 @@ export class RedisUserRepository implements UserRepository {
 
     return JSON.parse(cachedUsers)
   }
+
+  async countUsers(): Promise<number> {
+    return 0
+  }
 }

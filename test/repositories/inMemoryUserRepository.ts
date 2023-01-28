@@ -11,4 +11,8 @@ export class InMemoryUserRepository implements UserRepository {
   async getUsers(): Promise<User[]> {
     return this.users
   }
+
+  async countUsers(): Promise<number> {
+    return this.users.length
+  }
 }

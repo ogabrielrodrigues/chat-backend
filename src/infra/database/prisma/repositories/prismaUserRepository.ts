@@ -20,4 +20,10 @@ export class PrismaUserRepository implements UserRepository {
 
     return users.map(PrismaUserMapper.toDomain)
   }
+
+  async countUsers(): Promise<number> {
+    const count = await this.prisma.user.count()
+
+    return count
+  }
 }

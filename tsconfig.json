@@ -21,7 +21,7 @@
       "@instances/*": ["src/infra/http/instances/*"],
       "@viewModels/*": ["src/infra/http/viewModels/*"],
       "@test/*": ["./test/*"],
-      "@helpers/*": ["./src/infra/helpers/*"],
+      "@helpers/*": ["./src/infra/helpers/*"]
     }
   },
   "exclude": ["dist"]
