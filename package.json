@@ -34,8 +34,6 @@
     "husky": "^8.0.3",
     "prettier": "^2.8.3",
     "prisma": "^4.9.0",
-    "tsconfig-paths": "^4.1.2",
-    "tscpaths": "^0.0.9",
     "tsx": "^3.12.2",
     "typescript": "^4.5.2",
     "vite-tsconfig-paths": "^4.0.5",
