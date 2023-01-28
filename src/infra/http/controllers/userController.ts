@@ -19,7 +19,7 @@ export class UserController {
 
       return reply.status(201).send({ user: UserViewModel.toHttp(user) })
     } catch (err) {
-      return reply.status(400).send(prismaUserErrors.emailAlreadyUsed(err))
+      return reply.status(400).send(prismaUserErrors.contraintAlreadyUsed(err))
     }
   }
 
