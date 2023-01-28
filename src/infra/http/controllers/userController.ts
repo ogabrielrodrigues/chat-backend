@@ -8,6 +8,7 @@ import { GetUsers } from '@useCases/getUsers'
 import { UserViewModel } from '@viewModels/userViewModel'
 import { CountUsers } from '@useCases/countUsers'
 import { GetUserById } from '@useCases/getUserById'
+import { User } from '@entities/user'
 
 export class UserController {
   constructor(
@@ -50,7 +51,7 @@ export class UserController {
   }
 
   async getById(request: FastifyRequest, reply: FastifyReply) {
-    const { id } = request.params as { id: string }
+    const { id } = request.params as Partial<User>
 
     try {
       const { user } = await this.getUserById.execute({ id })

@@ -10,7 +10,6 @@
     "start": "node dist/index.js",
     "dev": "tsx watch src/index.ts",
     "build": "npx tsup ./src",
-    "build:deploy": "npx tsc && npx tscpaths -p tsconfig.json -s ./src -o ./dist",
     "test": "vitest",
     "lint": "eslint ./**/*.ts --no-ignore --fix",
     "postinstall": "npx husky install",
