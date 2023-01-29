@@ -1,9 +1,10 @@
 import 'dotenv/config'
 import cors from '@fastify/cors'
+import { authController } from '@instances/authControllerInstance'
 import { userController } from '@instances/userControllerInstance'
 import fastify from 'fastify'
+
 import { authMiddleware } from './infra/http/middlewares/authMiddleware'
-import { authController } from '@instances/authControllerInstance'
 
 const app = fastify()
 const port = process.env.PORT ?? 3333
