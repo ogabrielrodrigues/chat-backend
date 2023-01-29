@@ -4,6 +4,8 @@ import { UserRepository } from '@repositories/userRepository'
 import { PrismaUserMapper } from '../mappers/prismaUserMapper'
 import { PrismaClient } from '@prisma/client'
 
+import { compare } from 'bcrypt'
+
 export class PrismaUserRepository implements UserRepository {
   constructor(private prisma: PrismaClient) {}
 
@@ -33,6 +35,22 @@ export class PrismaUserRepository implements UserRepository {
         id
       }
     })
+
+    return PrismaUserMapper.toDomain(user)
+  }
+
+  async authUser(username: string, password: string): Promise<User> {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        username
+      }
+    })
+
+    const passwordsMatch = await compare(password, user.password)
+
+    if (!passwordsMatch) {
+      throw 'Passwords do not match.'
+    }
 
     return PrismaUserMapper.toDomain(user)
   }

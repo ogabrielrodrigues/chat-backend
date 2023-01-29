@@ -19,4 +19,8 @@ export class InMemoryUserRepository implements UserRepository {
   async getUserById(id: string): Promise<User> {
     return this.users.find(user => user.id === id)
   }
+
+  async authUser(username: string, password: string): Promise<User> {
+    return this.users.find(user => user.username === username && user.password === password)
+  }
 }

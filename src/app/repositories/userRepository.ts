@@ -5,4 +5,5 @@ export abstract class UserRepository {
   abstract getUsers(): Promise<User[]>
   abstract countUsers(): Promise<number>
   abstract getUserById(id: string): Promise<User>
+  abstract authUser(username: string, password: string): Promise<User>
 }

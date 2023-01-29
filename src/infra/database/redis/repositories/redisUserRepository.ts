@@ -45,4 +45,8 @@ export class RedisUserRepository implements UserRepository {
 
     return JSON.parse(cachedUser)
   }
+
+  async authUser(username: string, password: string): Promise<User> {
+    return
+  }
 }
