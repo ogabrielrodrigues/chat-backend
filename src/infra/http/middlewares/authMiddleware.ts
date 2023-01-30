@@ -1,7 +1,7 @@
-import { FastifyRequest, FastifyReply } from 'fastify'
+import { Request, Response, NextFunction } from 'express'
 import jwt, { JsonWebTokenError } from 'jsonwebtoken'
 
-async function authMiddleware(request: FastifyRequest, reply: FastifyReply) {
+async function authMiddleware(request: Request, reply: Response, next: NextFunction) {
   try {
     const [, token] = request.headers.authorization.split(' ')
 
@@ -9,6 +9,7 @@ async function authMiddleware(request: FastifyRequest, reply: FastifyReply) {
 
     if (typeof userDecoded === 'object') {
       request.user = userDecoded.user
+      next()
     } else {
       throw 'Unexpected error'
     }

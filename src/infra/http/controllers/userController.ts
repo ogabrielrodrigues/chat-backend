@@ -1,5 +1,5 @@
 import { CreateUser } from '@useCases/createUser'
-import { FastifyRequest, FastifyReply } from 'fastify'
+import { Request, Response } from 'express'
 
 import { prismaUserErrors } from '@helpers/error/prismaUserErrors'
 
@@ -22,51 +22,51 @@ export class UserController {
     private updateUser: UpdateUser
   ) {}
 
-  async create(request: FastifyRequest, reply: FastifyReply) {
+  async create(request: Request, response: Response) {
     try {
       const { name, username, age, email, password } = request.body as CreateUserDTO
 
       const { user } = await this.createUser.execute({ name, username, age, email, password })
 
-      return reply.status(201).send({ user: UserViewModel.toHttp(user) })
+      return response.status(201).send({ user: UserViewModel.toHttp(user) })
     } catch (err) {
-      return reply.status(400).send(prismaUserErrors.contraintAlreadyUsed(err))
+      return response.status(400).send(prismaUserErrors.contraintAlreadyUsed(err))
     }
   }
 
-  async list(request: FastifyRequest, reply: FastifyReply) {
+  async list(request: Request, response: Response) {
     try {
       const { users } = await this.getUsers.execute()
 
-      return reply.status(200).send({ users: users.map(UserViewModel.toHttp) })
+      return response.status(200).send({ users: users.map(UserViewModel.toHttp) })
     } catch (err) {
-      return reply.status(400).send(err)
+      return response.status(400).send(err)
     }
   }
 
-  async count(request: FastifyRequest, reply: FastifyReply) {
+  async count(request: Request, response: Response) {
     try {
       const { count } = await this.countUsers.execute()
 
-      return reply.status(200).send({ count })
+      return response.status(200).send({ count })
     } catch (err) {
-      return reply.status(400).send(err)
+      return response.status(400).send(err)
     }
   }
 
-  async getById(request: FastifyRequest, reply: FastifyReply) {
+  async getById(request: Request, response: Response) {
     const { id } = request.params as Partial<User>
 
     try {
       const { user } = await this.getUserById.execute({ id })
 
-      return reply.status(200).send({ user: UserViewModel.toHttp(user) })
+      return response.status(200).send({ user: UserViewModel.toHttp(user) })
     } catch (err) {
-      return reply.status(400).send(err)
+      return response.status(400).send(err)
     }
   }
 
-  async update(request: FastifyRequest, reply: FastifyReply) {
+  async update(request: Request, response: Response) {
     try {
       let auth = request.user
       const data = request.body as UpdateUserDTO
@@ -81,11 +81,11 @@ export class UserController {
 
       const userUpdated = new User({ ...data, ...user, password: undefined }, user.id, user.password)
 
-      const { user: response } = await this.updateUser.execute({ id: auth.id, user: userUpdated })
+      const { user: res } = await this.updateUser.execute({ id: auth.id, user: userUpdated })
 
-      return reply.status(200).send({ user: UserViewModel.toHttp(response) })
+      return response.status(200).send({ user: UserViewModel.toHttp(res) })
     } catch (err) {
-      return reply.status(400).send({ error: err })
+      return response.status(400).send({ error: err })
     }
   }
 }

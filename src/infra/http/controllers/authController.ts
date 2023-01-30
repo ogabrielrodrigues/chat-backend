@@ -1,5 +1,5 @@
 import { AuthUser } from '@useCases/authUser'
-import { FastifyReply, FastifyRequest } from 'fastify'
+import { Request, Response } from 'express'
 import { AuthenticateDTO } from '../dtos/authenticateDTO'
 import jwt from 'jsonwebtoken'
 import { PrismaUserMapper } from '@database/prisma/mappers/prismaUserMapper'
@@ -7,7 +7,7 @@ import { PrismaUserMapper } from '@database/prisma/mappers/prismaUserMapper'
 export class AuthController {
   constructor(private authUser: AuthUser) {}
 
-  async authenticate(request: FastifyRequest, reply: FastifyReply) {
+  async authenticate(request: Request, response: Response) {
     try {
       const { username, password } = request.body as AuthenticateDTO
 
@@ -18,9 +18,9 @@ export class AuthController {
         expiresIn: 86400000 // 1 day
       })
 
-      return reply.status(200).send({ token })
+      return response.status(200).send({ token })
     } catch (err) {
-      return reply.status(206).send({ error: err })
+      return response.status(206).send({ error: err })
     }
   }
 }
