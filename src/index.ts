@@ -1,9 +1,9 @@
 import 'dotenv/config'
-import express from 'express'
-import cors from 'cors'
 
 import { authController } from '@instances/authControllerInstance'
 import { userController } from '@instances/userControllerInstance'
+import cors from 'cors'
+import express from 'express'
 // import { authMiddleware } from './infra/http/middlewares/authMiddleware'
 
 const app = express()
