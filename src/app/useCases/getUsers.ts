@@ -10,7 +10,7 @@ export class GetUsers {
   constructor(private userRepository: UserRepository) {}
 
   async execute(): Promise<GetUsersResponse> {
-    const users = await this.userRepository.getUsers()
+    const users = await this.userRepository.get()
 
     return {
       users: users.map(PrismaUserMapper.toDomain)

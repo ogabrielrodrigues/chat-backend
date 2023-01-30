@@ -17,19 +17,19 @@ export class PrismaUserRepository implements UserRepository {
     })
   }
 
-  async getUsers(): Promise<User[]> {
+  async get(): Promise<User[]> {
     const users = await this.prisma.user.findMany()
 
     return users.map(PrismaUserMapper.toDomain)
   }
 
-  async countUsers(): Promise<number> {
+  async count(): Promise<number> {
     const count = await this.prisma.user.count()
 
     return count
   }
 
-  async getUserById(id: string): Promise<User> {
+  async getById(id: string): Promise<User> {
     const user = await this.prisma.user.findUnique({
       where: {
         id
@@ -39,7 +39,7 @@ export class PrismaUserRepository implements UserRepository {
     return PrismaUserMapper.toDomain(user)
   }
 
-  async authUser(username: string, password: string): Promise<User> {
+  async auth(username: string, password: string): Promise<User> {
     const user = await this.prisma.user.findFirst({
       where: {
         username
@@ -53,5 +53,16 @@ export class PrismaUserRepository implements UserRepository {
     }
 
     return PrismaUserMapper.toDomain(user)
+  }
+
+  async update(id: string, updateData: User): Promise<void> {
+    const raw = PrismaUserMapper.toPrisma(updateData)
+
+    await this.prisma.user.update({
+      where: {
+        id
+      },
+      data: raw
+    })
   }
 }

@@ -16,7 +16,7 @@ export class AuthUser {
   async execute(request: AuthUserRequest): Promise<AuthUserResponse> {
     const { username, password } = request
 
-    const user = await this.userRepository.authUser(username, password)
+    const user = await this.userRepository.auth(username, password)
 
     return {
       user

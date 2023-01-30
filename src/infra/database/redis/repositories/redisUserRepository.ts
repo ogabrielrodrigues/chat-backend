@@ -10,11 +10,11 @@ export class RedisUserRepository implements UserRepository {
     this.userRepository.create(user)
   }
 
-  async getUsers(): Promise<User[]> {
+  async get(): Promise<User[]> {
     const cachedUsers = await this.redis.get('users-cache')
 
     if (!cachedUsers) {
-      const users = await this.userRepository.getUsers()
+      const users = await this.userRepository.get()
 
       const preCacheUsers = users.map(PrismaUserMapper.toPrisma)
 
@@ -26,15 +26,15 @@ export class RedisUserRepository implements UserRepository {
     return JSON.parse(cachedUsers)
   }
 
-  async countUsers(): Promise<number> {
-    return this.userRepository.countUsers()
+  async count(): Promise<number> {
+    return this.userRepository.count()
   }
 
-  async getUserById(id: string): Promise<User> {
+  async getById(id: string): Promise<User> {
     const cachedUser = await this.redis.get('user-cached')
 
     if (!cachedUser) {
-      const user = await this.userRepository.getUserById(id)
+      const user = await this.userRepository.getById(id)
 
       const preCachedUser = PrismaUserMapper.toPrisma(user)
 
@@ -46,7 +46,11 @@ export class RedisUserRepository implements UserRepository {
     return JSON.parse(cachedUser)
   }
 
-  async authUser(username: string, password: string): Promise<User> {
+  async auth(username: string, password: string): Promise<User> {
+    return
+  }
+
+  async update(id: string, updateData: User): Promise<void> {
     return
   }
 }

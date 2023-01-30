@@ -8,19 +8,27 @@ export class InMemoryUserRepository implements UserRepository {
     this.users.push(user)
   }
 
-  async getUsers(): Promise<User[]> {
+  async get(): Promise<User[]> {
     return this.users
   }
 
-  async countUsers(): Promise<number> {
+  async count(): Promise<number> {
     return this.users.length
   }
 
-  async getUserById(id: string): Promise<User> {
+  async getById(id: string): Promise<User> {
     return this.users.find(user => user.id === id)
   }
 
-  async authUser(username: string, password: string): Promise<User> {
+  async auth(username: string, password: string): Promise<User> {
     return this.users.find(user => user.username === username && user.password === password)
+  }
+
+  async update(id: string, updateData: User): Promise<void> {
+    const index = this.users.findIndex(user => user.id === id)
+
+    if (index >= 0) {
+      this.users[index] = updateData
+    }
   }
 }

@@ -9,13 +9,17 @@ import { UserViewModel } from '@viewModels/userViewModel'
 import { CountUsers } from '@useCases/countUsers'
 import { GetUserById } from '@useCases/getUserById'
 import { User } from '@entities/user'
+import { UpdateUser } from '@useCases/updateUser'
+import { UpdateUserDTO } from '../dtos/updateUserDTO'
+import { PrismaUserMapper } from '@database/prisma/mappers/prismaUserMapper'
 
 export class UserController {
   constructor(
     private createUser: CreateUser,
     private getUsers: GetUsers,
     private countUsers: CountUsers,
-    private getUserById: GetUserById
+    private getUserById: GetUserById,
+    private updateUser: UpdateUser
   ) {}
 
   async create(request: FastifyRequest, reply: FastifyReply) {
@@ -59,6 +63,29 @@ export class UserController {
       return reply.status(200).send({ user: UserViewModel.toHttp(user) })
     } catch (err) {
       return reply.status(400).send(err)
+    }
+  }
+
+  async update(request: FastifyRequest, reply: FastifyReply) {
+    try {
+      let auth = request.user
+      const data = request.body as UpdateUserDTO
+
+      if (!auth) {
+        throw 'User not authenticated.'
+      }
+
+      let { user: raw } = await this.getUserById.execute({ id: auth.id })
+
+      const user = PrismaUserMapper.toPrisma(raw)
+
+      const userUpdated = new User({ ...data, ...user, password: undefined }, user.id, user.password)
+
+      const { user: response } = await this.updateUser.execute({ id: auth.id, user: userUpdated })
+
+      return reply.status(200).send({ user: UserViewModel.toHttp(response) })
+    } catch (err) {
+      return reply.status(400).send({ error: err })
     }
   }
 }

@@ -8,12 +8,10 @@ async function authMiddleware(request: FastifyRequest, reply: FastifyReply) {
     const userDecoded = jwt.verify(token, process.env.JWT_SECRET)
 
     if (typeof userDecoded === 'object') {
-      request.userId = userDecoded.id
+      request.user = userDecoded.user
     } else {
       throw 'Unexpected error'
     }
-
-    request.userId = userDecoded.id
   } catch (err) {
     if (err instanceof JsonWebTokenError) {
       return reply.status(401).send({ error: err.message })

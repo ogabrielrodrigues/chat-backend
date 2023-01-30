@@ -8,7 +8,7 @@ export class CountUsers {
   constructor(private userRepository: UserRepository) {}
 
   async execute(): Promise<CountUsersResponse> {
-    const count = await this.userRepository.countUsers()
+    const count = await this.userRepository.count()
 
     return {
       count

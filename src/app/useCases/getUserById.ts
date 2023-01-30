@@ -14,7 +14,7 @@ export class GetUserById {
   constructor(private userRepository: UserRepository) {}
 
   async execute(request: GetUserByIdRequest): Promise<GetUserByIdResponse> {
-    const user = await this.userRepository.getUserById(request.id)
+    const user = await this.userRepository.getById(request.id)
 
     return {
       user: PrismaUserMapper.toDomain(user)

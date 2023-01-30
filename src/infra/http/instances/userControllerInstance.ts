@@ -7,6 +7,7 @@ import { CountUsers } from '@useCases/countUsers'
 import { CreateUser } from '@useCases/createUser'
 import { GetUserById } from '@useCases/getUserById'
 import { GetUsers } from '@useCases/getUsers'
+import { UpdateUser } from '@useCases/updateUser'
 
 const prismaUserRepository = new PrismaUserRepository(prisma)
 const redisUserRepository = new RedisUserRepository(redis, prismaUserRepository)
@@ -15,6 +16,7 @@ const createUser = new CreateUser(redisUserRepository)
 const getUsers = new GetUsers(redisUserRepository)
 const countUsers = new CountUsers(prismaUserRepository)
 const getUserById = new GetUserById(redisUserRepository)
-const userController = new UserController(createUser, getUsers, countUsers, getUserById)
+const updateUser = new UpdateUser(prismaUserRepository)
+const userController = new UserController(createUser, getUsers, countUsers, getUserById, updateUser)
 
 export { userController }
