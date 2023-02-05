@@ -1,3 +1,4 @@
+import { logger } from '@helpers/logger/log'
 import { Redis } from 'ioredis'
 
 const redis = new Redis(process.env.UPSTASH_REDIS_URL)
@@ -6,6 +7,6 @@ const redis = new Redis(process.env.UPSTASH_REDIS_URL)
     console.error(err)
     process.exit(1)
   })
-  .on('connect', () => console.log('Redis connected.'))
+  .on('connect', () => logger('redis', 'connect', 'Redis connected'))
 
 export { redis }
