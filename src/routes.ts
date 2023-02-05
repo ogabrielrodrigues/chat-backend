@@ -1,7 +1,6 @@
-import { Router } from 'express'
-
 import { authController } from '@instances/authControllerInstance'
 import { userController } from '@instances/userControllerInstance'
+import { Router } from 'express'
 
 const routes = Router()
 
