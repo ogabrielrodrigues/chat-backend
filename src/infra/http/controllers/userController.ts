@@ -69,18 +69,19 @@ export class UserController {
   async update(request: Request, response: Response) {
     try {
       let auth = request.user
+
       const data = request.body as UpdateUserDTO
 
       if (!auth) {
         throw 'User not authenticated.'
       }
 
-      let { user: raw } = await this.getUserById.execute({ id: auth.id })
+      const user = {
+        ...auth,
+        ...data
+      }
 
-      const user = PrismaUserMapper.toPrisma(raw)
-
-      const userUpdated = new User({ ...data, ...user, password: undefined }, user.id, user.password)
-
+      const userUpdated = new User({ ...user }, auth.id, auth.password)
       const { user: res } = await this.updateUser.execute({ id: auth.id, user: userUpdated })
 
       return response.status(200).send({ user: UserViewModel.toHttp(res) })

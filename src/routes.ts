@@ -1,6 +1,7 @@
 import { authController } from '@instances/authControllerInstance'
 import { userController } from '@instances/userControllerInstance'
 import { Router } from 'express'
+import { authMiddleware } from './infra/http/middlewares/authMiddleware'
 
 const routes = Router()
 
@@ -15,6 +16,6 @@ routes.post('/user', async (req, res) => await userController.create(req, res))
 routes.get('/user', async (req, res) => await userController.list(req, res))
 routes.get('/user/count', async (req, res) => await userController.count(req, res))
 routes.get('/user/:id', async (req, res) => await userController.getById(req, res))
-routes.put('/user', async (req, res) => await userController.update(req, res))
+routes.put('/user', authMiddleware, async (req, res) => await userController.update(req, res))
 
 export { routes }

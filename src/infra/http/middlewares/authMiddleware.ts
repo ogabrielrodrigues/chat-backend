@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt, { JsonWebTokenError } from 'jsonwebtoken'
 
-async function authMiddleware(request: Request, reply: Response, next: NextFunction) {
+export async function authMiddleware(request: Request, reply: Response, next: NextFunction) {
   try {
     const [, token] = request.headers.authorization.split(' ')
 
