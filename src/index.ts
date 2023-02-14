@@ -3,10 +3,18 @@ import 'dotenv/config'
 import { logger } from '@helpers/logger/log'
 import cors from 'cors'
 import express from 'express'
+import { randomUUID } from 'node:crypto'
 import { createServer } from 'node:http'
 import { Server } from 'socket.io'
 
 import { routes } from './routes'
+
+interface Message {
+  authorId: string
+  username: string
+  content: string
+  sendedAt: string
+}
 
 const app = express()
 const http = createServer(app)
@@ -26,12 +34,18 @@ app.use(
 )
 app.use(routes)
 
-io.on('connection', socket => {
-  logger('io', 'connect', 'Socket open!')
+const room = randomUUID()
 
-  socket.on('message', msg => {
-    console.log(msg)
+io.sockets.on('connection', socket => {
+  const userId = socket.id
+
+  socket.emit('ready', { status: `connected: ${userId}` })
+  socket.join(`room_${room}`)
+  socket.emit('joined_on_room', room)
+
+  socket.on('new_message', (msg: Message) => {
+    io.emit('replies', msg)
   })
-}).on('close', () => logger('io', 'disconnect', 'Socket closed.'))
+})
 
-app.listen(port, () => logger('server', 'listen', `Server is running on ::${port}`))
+http.listen(port, () => logger('server', 'listen', `Server is running on ::${port}`))
