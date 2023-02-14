@@ -24,13 +24,13 @@ export class UserController {
 
   async create(request: Request, response: Response) {
     try {
-      const { name, username, age, email, password } = request.body as CreateUserDTO
+      const { username, email, password } = request.body as CreateUserDTO
 
-      const { user } = await this.createUser.execute({ name, username, age, email, password })
+      const { user } = await this.createUser.execute({ username, email, password })
 
       return response.status(201).send({ user: UserViewModel.toHttp(user) })
     } catch (err) {
-      return response.status(400).send(prismaUserErrors.contraintAlreadyUsed(err))
+      return response.status(400).send(prismaUserErrors.constraintAlreadyUsed(err))
     }
   }
 

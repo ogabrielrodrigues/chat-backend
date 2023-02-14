@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client'
 
 export class prismaUserErrors {
-  static contraintAlreadyUsed(err: any) {
+  static constraintAlreadyUsed(err: any) {
     if (err instanceof Prisma.PrismaClientKnownRequestError) {
       if (err.code === 'P2002') {
         return {
