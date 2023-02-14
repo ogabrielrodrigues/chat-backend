@@ -12,17 +12,13 @@ const getUsersById = new GetUserById(inMemoryUserRepository)
 describe('Get user by id', () => {
   it('should be able to get user by your id.', async () => {
     const { user: user1 } = await createUser.execute({
-      name: faker.name.fullName(),
       username: faker.name.lastName(),
-      age: parseInt(faker.random.numeric(2)),
       email: faker.internet.email(),
       password: faker.internet.password()
     })
 
     await createUser.execute({
-      name: faker.name.fullName(),
       username: faker.name.lastName(),
-      age: parseInt(faker.random.numeric(2)),
       email: faker.internet.email(),
       password: faker.internet.password()
     })

@@ -2,9 +2,7 @@ import { User } from '@entities/user'
 import { UserRepository } from '@repositories/userRepository'
 
 interface CreateUserRequest {
-  name: string
   username: string
-  age: number
   email: string
   password: string
 }
@@ -17,12 +15,10 @@ export class CreateUser {
   constructor(private userRepository: UserRepository) {}
 
   async execute(request: CreateUserRequest): Promise<CreateUserResponse> {
-    const { name, username, age, email, password } = request
+    const { username, email, password } = request
 
     const user = new User({
-      name,
       username,
-      age,
       email,
       password
     })

@@ -13,17 +13,13 @@ const getUsers = new GetUsers(inMemoryUserRepository)
 describe('Get users', () => {
   it('should be able to get existing users.', async () => {
     const { user: user1 } = await createUser.execute({
-      name: faker.name.fullName(),
       username: faker.name.lastName(),
-      age: parseInt(faker.random.numeric(2)),
       email: faker.internet.email(),
       password: faker.internet.password()
     })
 
     const { user: user2 } = await createUser.execute({
-      name: faker.name.fullName(),
       username: faker.name.lastName(),
-      age: parseInt(faker.random.numeric(2)),
       email: faker.internet.email(),
       password: faker.internet.password()
     })
