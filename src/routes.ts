@@ -1,6 +1,7 @@
 import { authController } from '@instances/authControllerInstance'
 import { userController } from '@instances/userControllerInstance'
 import { Router } from 'express'
+
 import { authMiddleware } from './infra/http/middlewares/authMiddleware'
 
 const routes = Router()

@@ -11,7 +11,8 @@ import { GetUserById } from '@useCases/getUserById'
 import { User } from '@entities/user'
 import { UpdateUser } from '@useCases/updateUser'
 import { UpdateUserDTO } from '../dtos/updateUserDTO'
-import { PrismaUserMapper } from '@database/prisma/mappers/prismaUserMapper'
+import { EmailConfirmation } from '@useCases/emailConfirmation'
+import { MailRepository } from '@repositories/mailRepository'
 
 export class UserController {
   constructor(
