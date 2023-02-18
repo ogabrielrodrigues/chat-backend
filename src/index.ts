@@ -14,6 +14,7 @@ interface Message {
   username: string
   content: string
   sendedAt: string
+  room: string
 }
 
 const app = express()
@@ -34,17 +35,17 @@ app.use(
 )
 app.use(routes)
 
-const room = randomUUID()
-
 io.sockets.on('connection', socket => {
   const userId = socket.id
+  io.emit('ready', { status: `connected: ${userId}` })
 
-  socket.emit('ready', { status: `connected: ${userId}` })
-  socket.join(`room_${room}`)
-  socket.emit('joined_on_room', room)
+  socket.on('join', (room: string) => {
+    socket.join(room)
+    io.emit('joined', room)
+  })
 
   socket.on('new_message', (msg: Message) => {
-    io.emit('replies', msg)
+    io.to(msg.room).emit('replies', msg)
   })
 })
 
