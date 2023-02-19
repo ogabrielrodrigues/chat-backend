@@ -11,8 +11,6 @@ import { GetUserById } from '@useCases/getUserById'
 import { User } from '@entities/user'
 import { UpdateUser } from '@useCases/updateUser'
 import { UpdateUserDTO } from '../dtos/updateUserDTO'
-import { EmailConfirmation } from '@useCases/emailConfirmation'
-import { MailRepository } from '@repositories/mailRepository'
 
 export class UserController {
   constructor(
@@ -20,7 +18,8 @@ export class UserController {
     private getUsers: GetUsers,
     private countUsers: CountUsers,
     private getUserById: GetUserById,
-    private updateUser: UpdateUser
+    private updateUser: UpdateUser,
+    private mailRepository: MailRepository
   ) {}
 
   async create(request: Request, response: Response) {
@@ -28,6 +27,8 @@ export class UserController {
       const { username, email, password } = request.body as CreateUserDTO
 
       const { user } = await this.createUser.execute({ username, email, password })
+
+      this.mailRepository.activate(user.email)
 
       return response.status(201).send({ user: UserViewModel.toHttp(user) })
     } catch (err) {
