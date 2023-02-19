@@ -3,7 +3,6 @@ import 'dotenv/config'
 import { logger } from '@helpers/logger/log'
 import cors from 'cors'
 import express from 'express'
-import { randomUUID } from 'node:crypto'
 import { createServer } from 'node:http'
 import { Server } from 'socket.io'
 
@@ -45,6 +44,7 @@ io.sockets.on('connection', socket => {
   })
 
   socket.on('new_message', (msg: Message) => {
+    console.log('user: %s, sended message: %s , on room: %s', msg.username, msg.content, msg.room)
     io.to(msg.room).emit('replies', msg)
   })
 })
