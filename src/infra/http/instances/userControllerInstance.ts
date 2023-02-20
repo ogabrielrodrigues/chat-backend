@@ -1,11 +1,11 @@
 import { UserController } from '@controllers/userController'
 
-import { CountUsers } from '@useCases/countUsers'
-import { CreateUser } from '@useCases/createUser'
-import { GetUserById } from '@useCases/getUserById'
-import { GetUsers } from '@useCases/getUsers'
-import { UpdateUser } from '@useCases/updateUser'
-import { GenerateConfirmationURL } from '@useCases/generateConfirmationURL'
+import { CountUsers } from '@useCases/user/countUsers'
+import { CreateUser } from '@useCases/user/createUser'
+import { GetUserById } from '@useCases/user/getUserById'
+import { GetUsers } from '@useCases/user/getUsers'
+import { UpdateUser } from '@useCases/user/updateUser'
+import { GenerateConfirmationURL } from '@useCases/mail/generateConfirmationURL'
 
 import { PrismaUserRepository } from '@database/prisma/repositories/prismaUserRepository'
 import { RedisUserRepository } from '@database/redis/repositories/redisUserRepository'

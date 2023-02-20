@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker'
 import { InMemoryUserRepository } from '@test/repositories/inMemoryUserRepository'
 import { describe, expect, it } from 'vitest'
 
-import { CreateUser } from './createUser'
+import { CreateUser } from '@useCases/user/createUser'
 import { GenerateConfirmationURL } from './generateConfirmationURL'
 
 const inMemoryUserRepository = new InMemoryUserRepository()

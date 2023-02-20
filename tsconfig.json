@@ -18,10 +18,12 @@
       "@controllers/*": ["./src/infra/http/controllers/*"],
       "@useCases/*": ["./src/app/useCases/*"],
       "@database/*": ["./src/infra/database/*"],
+      "@mail/*": ["./src/infra/mail/*"],
       "@instances/*": ["src/infra/http/instances/*"],
+      "@dtos/*": ["src/infra/http/dtos/*"],
       "@viewModels/*": ["src/infra/http/viewModels/*"],
       "@test/*": ["./test/*"],
-      "@helpers/*": ["./src/infra/helpers/*"]
+      "@helpers/*": ["./src/infra/helpers/*"],
     }
   },
   "exclude": ["dist"]

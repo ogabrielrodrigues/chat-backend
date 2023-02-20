@@ -1,18 +1,18 @@
 import { Request, Response } from 'express'
+import { resolve } from 'path'
 import { User } from '@entities/user'
 
-import { CreateUser } from '@useCases/createUser'
-import { GetUsers } from '@useCases/getUsers'
-import { CountUsers } from '@useCases/countUsers'
-import { GetUserById } from '@useCases/getUserById'
-import { UpdateUser } from '@useCases/updateUser'
-import { GenerateConfirmationURL } from '@useCases/generateConfirmationURL'
+import { CreateUser } from '@useCases/user/createUser'
+import { GetUsers } from '@useCases/user/getUsers'
+import { CountUsers } from '@useCases/user/countUsers'
+import { GetUserById } from '@useCases/user/getUserById'
+import { UpdateUser } from '@useCases/user/updateUser'
+import { GenerateConfirmationURL } from '@useCases/mail/generateConfirmationURL'
 
-import { UpdateUserDTO } from '../dtos/updateUserDTO'
-import { CreateUserDTO } from '../dtos/createUserDTO'
+import { UpdateUserDTO } from '@dtos/updateUserDTO'
+import { CreateUserDTO } from '@dtos/createUserDTO'
 import { UserViewModel } from '@viewModels/userViewModel'
 import { prismaUserErrors } from '@helpers/error/prismaUserErrors'
-import { resolve } from 'path'
 
 export class UserController {
   constructor(

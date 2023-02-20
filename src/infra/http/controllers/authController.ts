@@ -1,7 +1,8 @@
-import { AuthUser } from '@useCases/authUser'
 import { Request, Response } from 'express'
-import { AuthenticateDTO } from '../dtos/authenticateDTO'
 import jwt from 'jsonwebtoken'
+
+import { AuthUser } from '@useCases/user/authUser'
+import { AuthenticateDTO } from '@dtos/authenticateDTO'
 import { PrismaUserMapper } from '@database/prisma/mappers/prismaUserMapper'
 
 export class AuthController {
