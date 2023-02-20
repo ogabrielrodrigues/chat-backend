@@ -18,5 +18,6 @@ routes.get('/user', async (req, res) => await userController.list(req, res))
 routes.get('/user/count', async (req, res) => await userController.count(req, res))
 routes.get('/user/:id', async (req, res) => await userController.getById(req, res))
 routes.put('/user', authMiddleware, async (req, res) => await userController.update(req, res))
+routes.get('/activate', async (req, res) => await userController.activate(req, res))
 
 export { routes }

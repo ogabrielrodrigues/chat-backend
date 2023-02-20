@@ -1,17 +1,18 @@
-import { CreateUser } from '@useCases/createUser'
 import { Request, Response } from 'express'
+import { User } from '@entities/user'
 
-import { prismaUserErrors } from '@helpers/error/prismaUserErrors'
-
-import { CreateUserDTO } from '../dtos/createUserDTO'
+import { CreateUser } from '@useCases/createUser'
 import { GetUsers } from '@useCases/getUsers'
-import { UserViewModel } from '@viewModels/userViewModel'
 import { CountUsers } from '@useCases/countUsers'
 import { GetUserById } from '@useCases/getUserById'
-import { User } from '@entities/user'
 import { UpdateUser } from '@useCases/updateUser'
+import { GenerateConfirmationURL } from '@useCases/generateConfirmationURL'
+
 import { UpdateUserDTO } from '../dtos/updateUserDTO'
-import { PrismaUserMapper } from '@database/prisma/mappers/prismaUserMapper'
+import { CreateUserDTO } from '../dtos/createUserDTO'
+import { UserViewModel } from '@viewModels/userViewModel'
+import { prismaUserErrors } from '@helpers/error/prismaUserErrors'
+import { resolve } from 'path'
 
 export class UserController {
   constructor(
@@ -19,7 +20,9 @@ export class UserController {
     private getUsers: GetUsers,
     private countUsers: CountUsers,
     private getUserById: GetUserById,
-    private updateUser: UpdateUser
+    private updateUser: UpdateUser,
+    private generateConfirmationURL: GenerateConfirmationURL,
+    private mailRepository: MailRepository
   ) {}
 
   async create(request: Request, response: Response) {
@@ -27,6 +30,10 @@ export class UserController {
       const { username, email, password } = request.body as CreateUserDTO
 
       const { user } = await this.createUser.execute({ username, email, password })
+
+      const { confirmationURL } = this.generateConfirmationURL.execute({ user })
+
+      this.mailRepository.activate(user.email, confirmationURL)
 
       return response.status(201).send({ user: UserViewModel.toHttp(user) })
     } catch (err) {
@@ -85,6 +92,21 @@ export class UserController {
       const { user: res } = await this.updateUser.execute({ id: auth.id, user: userUpdated })
 
       return response.status(200).send({ user: UserViewModel.toHttp(res) })
+    } catch (err) {
+      return response.status(400).send({ error: err })
+    }
+  }
+
+  async activate(request: Request, response: Response) {
+    try {
+      const userId = request.query.id as string
+
+      const { user } = await this.getUserById.execute({ id: userId })
+
+      user.active = true
+      await this.updateUser.execute({ id: user.id, user })
+
+      return response.status(200).sendFile(resolve(__dirname, '..', 'viewModels', 'activateViewModel.html'))
     } catch (err) {
       return response.status(400).send({ error: err })
     }

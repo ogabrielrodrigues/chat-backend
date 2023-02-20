@@ -4,6 +4,7 @@ import { randomUUID as uuid } from 'node:crypto'
 interface UserProps {
   username: string
   email: string
+  active?: boolean
   password?: string
 }
 
@@ -14,6 +15,8 @@ export class User {
 
   constructor(props: UserProps, id?: string, pass?: string) {
     this.props = props
+
+    this.props.active = props.active ?? false
 
     this.pass = pass ?? hashSync(props.password, 12)
     this._id = id ?? uuid()
@@ -37,6 +40,14 @@ export class User {
 
   public get email(): string {
     return this.props.email
+  }
+
+  public set active(active: boolean) {
+    this.props.active = active
+  }
+
+  public get active(): boolean {
+    return this.props.active
   }
 
   public set password(password: string) {
