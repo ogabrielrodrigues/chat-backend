@@ -9,11 +9,11 @@ import { GenerateConfirmationURL } from '@useCases/generateConfirmationURL'
 
 import { PrismaUserRepository } from '@database/prisma/repositories/prismaUserRepository'
 import { RedisUserRepository } from '@database/redis/repositories/redisUserRepository'
-import { SESRepository } from '../../mail/aws/repositories/sesRepository'
+import { MailTrapRepository } from '../../mail/mailtrap/repositories/mailTrapRepository'
 
 import { prisma } from '@database/prisma/prisma'
 import { redis } from '@database/redis/redis'
-import { SESClient } from '../../mail/aws/ses'
+import { mailtrap } from '../../mail/mailtrap/mailtrap'
 
 const prismaUserRepository = new PrismaUserRepository(prisma)
 const redisUserRepository = new RedisUserRepository(redis, prismaUserRepository)
@@ -25,7 +25,7 @@ const getUserById = new GetUserById(redisUserRepository)
 const updateUser = new UpdateUser(prismaUserRepository)
 const generateConfirmationURL = new GenerateConfirmationURL()
 
-const sesRepository = new SESRepository(SESClient)
+const mailTrapRepository = new MailTrapRepository(mailtrap)
 
 const userController = new UserController(
   createUser,
@@ -34,7 +34,7 @@ const userController = new UserController(
   getUserById,
   updateUser,
   generateConfirmationURL,
-  sesRepository
+  mailTrapRepository
 )
 
 export { userController }
