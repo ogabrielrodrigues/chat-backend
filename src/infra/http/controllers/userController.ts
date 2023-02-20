@@ -12,6 +12,7 @@ import { UpdateUserDTO } from '../dtos/updateUserDTO'
 import { CreateUserDTO } from '../dtos/createUserDTO'
 import { UserViewModel } from '@viewModels/userViewModel'
 import { prismaUserErrors } from '@helpers/error/prismaUserErrors'
+import { resolve } from 'path'
 
 export class UserController {
   constructor(
@@ -91,6 +92,21 @@ export class UserController {
       const { user: res } = await this.updateUser.execute({ id: auth.id, user: userUpdated })
 
       return response.status(200).send({ user: UserViewModel.toHttp(res) })
+    } catch (err) {
+      return response.status(400).send({ error: err })
+    }
+  }
+
+  async activate(request: Request, response: Response) {
+    try {
+      const userId = request.query.id as string
+
+      const { user } = await this.getUserById.execute({ id: userId })
+
+      user.active = true
+      await this.updateUser.execute({ id: user.id, user })
+
+      return response.status(200).sendFile(resolve(__dirname, '..', 'viewModels', 'activateViewModel.html'))
     } catch (err) {
       return response.status(400).send({ error: err })
     }
