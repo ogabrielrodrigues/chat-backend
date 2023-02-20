@@ -1,6 +1,6 @@
 import SES from 'aws-sdk/clients/ses'
 
-export class SESRepository implements MailRepository {
+class SESRepository implements MailRepository {
   constructor(private SESClient: SES) {}
 
   async activate(email: string, activateURL: string): Promise<void> {

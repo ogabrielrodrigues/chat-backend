@@ -8,5 +8,3 @@ const SESClient = new SES({
     secretAccessKey: process.env.AWS_SECRET_KEY
   }
 })
-
-export { SESClient }
