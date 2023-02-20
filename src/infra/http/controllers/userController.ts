@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import { resolve } from 'path'
 import { User } from '@entities/user'
 
 import { CreateUser } from '@useCases/user/createUser'
@@ -12,6 +11,7 @@ import { GenerateConfirmationURL } from '@useCases/mail/generateConfirmationURL'
 import { UpdateUserDTO } from '@dtos/updateUserDTO'
 import { CreateUserDTO } from '@dtos/createUserDTO'
 import { UserViewModel } from '@viewModels/userViewModel'
+import { activateViewModel } from '@viewModels/activateViewModel'
 import { prismaUserErrors } from '@helpers/error/prismaUserErrors'
 
 export class UserController {
@@ -106,7 +106,7 @@ export class UserController {
       user.active = true
       await this.updateUser.execute({ id: user.id, user })
 
-      return response.status(200).sendFile(resolve(__dirname, '..', 'viewModels', 'activateViewModel.html'))
+      return response.status(200).send(activateViewModel)
     } catch (err) {
       return response.status(400).send({ error: err })
     }
