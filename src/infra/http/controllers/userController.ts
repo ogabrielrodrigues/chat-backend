@@ -1,16 +1,17 @@
-import { CreateUser } from '@useCases/createUser'
 import { Request, Response } from 'express'
+import { User } from '@entities/user'
 
-import { prismaUserErrors } from '@helpers/error/prismaUserErrors'
-
-import { CreateUserDTO } from '../dtos/createUserDTO'
+import { CreateUser } from '@useCases/createUser'
 import { GetUsers } from '@useCases/getUsers'
-import { UserViewModel } from '@viewModels/userViewModel'
 import { CountUsers } from '@useCases/countUsers'
 import { GetUserById } from '@useCases/getUserById'
-import { User } from '@entities/user'
 import { UpdateUser } from '@useCases/updateUser'
+import { GenerateConfirmationURL } from '@useCases/generateConfirmationURL'
+
 import { UpdateUserDTO } from '../dtos/updateUserDTO'
+import { CreateUserDTO } from '../dtos/createUserDTO'
+import { UserViewModel } from '@viewModels/userViewModel'
+import { prismaUserErrors } from '@helpers/error/prismaUserErrors'
 
 export class UserController {
   constructor(
@@ -19,6 +20,7 @@ export class UserController {
     private countUsers: CountUsers,
     private getUserById: GetUserById,
     private updateUser: UpdateUser,
+    private generateConfirmationURL: GenerateConfirmationURL,
     private mailRepository: MailRepository
   ) {}
 
@@ -28,7 +30,9 @@ export class UserController {
 
       const { user } = await this.createUser.execute({ username, email, password })
 
-      this.mailRepository.activate(user.email)
+      const { confirmationURL } = this.generateConfirmationURL.execute({ user })
+
+      this.mailRepository.activate(user.email, confirmationURL)
 
       return response.status(201).send({ user: UserViewModel.toHttp(user) })
     } catch (err) {
