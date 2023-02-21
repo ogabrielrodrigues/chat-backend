@@ -8,11 +8,26 @@ import { Server } from 'socket.io'
 
 import { routes } from './routes'
 
-interface Message {
-  authorId: string
+interface ChatUser {
+  id: string
+  socket_id: string
   username: string
+  status: string
+  profile: {
+    avatarUrl: string
+  }
+  room: string
+}
+
+interface Message {
+  user: ChatUser
   content: string
   sendedAt: string
+  room: string
+}
+
+interface NewUserJoinedResponse {
+  user: ChatUser
   room: string
 }
 
@@ -34,18 +49,40 @@ app.use(
 )
 app.use(routes)
 
-io.sockets.on('connection', socket => {
-  const userId = socket.id
-  io.emit('ready', { status: `connected: ${userId}` })
+const users: ChatUser[] = []
+// const rooms: string[] = []
+const messages: Message[] = []
 
-  socket.on('join', (room: string) => {
+function getPrevMessages(room: string) {
+  const prevMessages = messages.filter(message => message.room === room)
+
+  return prevMessages
+}
+
+io.on('connection', socket => {
+  logger('io', 'connection', 'New user connected: ' + socket.id)
+
+  socket.on('join_room', ({ user, room }: NewUserJoinedResponse) => {
     socket.join(room)
-    io.emit('joined', room)
+
+    const userInRoom = users.find(usr => usr.username === user.username && usr.room === user.room)
+
+    if (userInRoom) {
+      /* eslint no-unused-expressions: "off" */
+      userInRoom.socket_id === socket.id
+    } else {
+      users.push(user)
+    }
+
+    const prevMessages = getPrevMessages(room)
+    io.to(room).emit('prev_messages', { messages: prevMessages })
   })
 
-  socket.on('new_message', (msg: Message) => {
-    console.log('user: %s, sended message: %s , on room: %s', msg.username, msg.content, msg.room)
-    io.to(msg.room).emit('replies', msg)
+  socket.on('message', (message: Message) => {
+    console.log('user: %s, sended message: %s , on room: %s', message.user.username, message.content, message.room)
+    messages.push(message)
+
+    io.to(message.room).emit('message', message)
   })
 })
 
