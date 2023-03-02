@@ -12,10 +12,9 @@ interface ChatUser {
   id: string
   socket_id: string
   username: string
-  status: string
-  profile: {
-    avatarUrl: string
-  }
+  email: string
+  password: string
+  active: boolean
   room: string
 }
 
